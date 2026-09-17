@@ -3,129 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobDhund - नोकरी शोधा / Search Jobs</title>
+    <title>JobDhund - नोकरी शोधा / पोस्ट करा</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #f4f6f9; color: #333; }
+        body { background-color: #f4f6f9; color: #333; padding-bottom: 30px; }
         
-        /* Header & Navigation */
-        header { background-color: #0056b3; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        header { background-color: #0056b3; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 24px; font-weight: bold; }
         .logo span { color: #ffc107; }
-        .lang-btn button { background: white; border: none; padding: 6px 12px; margin-left: 5px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .lang-btn button:hover { background: #ffc107; }
+        .admin-link { color: white; text-decoration: underline; cursor: pointer; font-size: 14px; }
 
-        /* Banner & Search Section */
-        .search-section { background: #e9ecef; padding: 30px 20px; text-align: center; }
-        .search-section h2 { margin-bottom: 15px; color: #0056b3; }
-        .filter-box { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
-        select { padding: 10px; border: 1px solid #ccc; border-radius: 5px; min-width: 180px; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; margin-bottom: 15px; }
+
+        .form-group { margin-bottom: 12px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
         
-        .post-job-btn { background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
-        .post-job-btn:hover { background-color: #218838; }
+        .btn { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; width: 100%; font-size: 16px; }
+        .btn:hover { background-color: #218838; }
 
-        /* Job Cards Section */
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        .job-card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .job-details h3 { color: #0056b3; margin-bottom: 5px; }
+        .job-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid #0056b3; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .job-details h3 { color: #0056b3; }
         .job-details p { color: #666; font-size: 14px; margin: 3px 0; }
         .badge { background: #e2e8f0; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         
-        .call-btn { background-color: #007bff; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-flex; align-items: center; gap: 5px; }
-        .call-btn:hover { background-color: #0056b3; }
+        .call-btn { background-color: #007bff; color: white; padding: 8px 12px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; }
+        .approve-btn { background-color: #28a745; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+        .reject-btn { background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; }
 
-        footer { text-align: center; padding: 15px; background: #333; color: white; margin-top: 30px; font-size: 14px; }
+        #admin-panel { display: none; background: #fff3cd; border: 1px solid #ffeeba; }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
     <header>
         <div class="logo">Job<span>Dhund</span></div>
-        <div class="lang-btn">
-            <button onclick="changeLang('mr')">मराठी</button>
-            <button onclick="changeLang('hi')">हिंदी</button>
-            <button onclick="changeLang('en')">English</button>
-        </div>
+        <div class="admin-link" onclick="toggleAdmin()">🔑 Admin Login</div>
     </header>
 
-    <!-- Search & Filter Section -->
-    <section class="search-section">
-        <h2 id="search-title">तुमच्या जिल्ह्यातील नोकरी शोधा</h2>
-        <div class="filter-box">
-            <!-- District Filter -->
-            <select id="district-select">
-                <option value="all">सर्व जिल्हे (All Districts)</option>
-                <option value="pune">पुणे (Pune)</option>
-                <option value="nashik">नाशिक (Nashik)</option>
-                <option value="nanded">नांदेड (Nanded)</option>
-                <option value="sambhajinagar">छत्रपती संभाजीनगर</option>
-            </select>
-
-            <!-- Job Category Filter -->
-            <select id="category-select">
-                <option value="all">सर्व वर्गवारी (All Categories)</option>
-                <option value="driver">ड्रायव्हर / डिलिव्हरी</option>
-                <option value="office">ऑफिस / डेटा एंट्री</option>
-                <option value="shop">दुकानातील कामे</option>
-                <option value="factory">एमआयडीसी / कारखाना</option>
-            </select>
-        </div>
-
-        <!-- Post Job Button (Replace with Google Form Link) -->
-        <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="post-job-btn" id="post-btn">+ मोफत जाहिरात पोस्ट करा (Post Job)</a>
-    </section>
-
-    <!-- Job Listings Section -->
     <div class="container">
-        <!-- Job Entry 1 -->
-        <div class="job-card">
-            <div class="job-details">
-                <h3>चारचाकी ड्रायव्हर पाहिजे (Driver Urgently Needed)</h3>
-                <p><strong>कंपनी/मालक:</strong> रॉयल ट्रॅव्हल्स</p>
-                <p><strong>स्थान:</strong> पुणे (Pune) | <span class="badge">ड्रायव्हर</span></p>
-                <p><strong>पगार:</strong> ₹१५,००० - ₹१८,००० / महिना</p>
-            </div>
-            <div>
-                <!-- Direct Phone Call Button -->
-                <a href="tel:9876543210" class="call-btn">📞 थेट कॉल करा</a>
-            </div>
+        <!-- १. जॉब पोस्ट करण्याचा फॉर्म -->
+        <div class="card">
+            <h2>+ नवीन जाहिरात/जॉब पोस्ट करा</h2>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label>नोकरीचे नाव (Job Title):</label>
+                    <input type="text" id="title" required placeholder="उदा. चारचाकी ड्रायव्हर">
+                </div>
+                <div class="form-group">
+                    <label>कंपनी/मालकाचे नाव:</label>
+                    <input type="text" id="company" required placeholder="उदा. रॉयल ट्रॅव्हल्स">
+                </div>
+                <div class="form-group">
+                    <label>जिल्हा (District):</label>
+                    <select id="district">
+                        <option value="पुणे">पुणे</option>
+                        <option value="नाशिक">नाशिक</option>
+                        <option value="नांदेड">नांदेड</option>
+                        <option value="छत्रपती संभाजीनगर">छत्रपती संभाजीनगर</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>संपर्क फोन नंबर:</label>
+                    <input type="tel" id="phone" required placeholder="उदा. 9876543210">
+                </div>
+                <div class="form-group">
+                    <label>माहिती/पगार:</label>
+                    <textarea id="desc" rows="2" placeholder="उदा. पगार १५,००० महिना"></textarea>
+                </div>
+                <button type="submit" class="btn">पोस्ट सबमिट करा (Approval नंतर लाईव्ह होईल)</button>
+            </form>
         </div>
 
-        <!-- Job Entry 2 -->
-        <div class="job-card">
-            <div class="job-details">
-                <h3>कपड्यांच्या शोरूममध्ये सेल्समॅन (Sales Executive)</h3>
-                <p><strong>कंपनी/मालक:</strong> श्री गणेश क्लॉथ सेंटर</p>
-                <p><strong>स्थान:</strong> नांदेड (Nanded) | <span class="badge">दुकानातील कामे</span></p>
-                <p><strong>पगार:</strong> ₹१०,००० - ₹१२,००० / महिना</p>
-            </div>
-            <div>
-                <a href="tel:9876543210" class="call-btn">📞 थेट कॉल करा</a>
-            </div>
+        <!-- २. एडमिन पॅनल (Admin Approval Section) -->
+        <div class="card" id="admin-panel">
+            <h2>🔑 Admin Panel (पेंडिंग अप्रूव्हल्स)</h2>
+            <div id="pending-jobs"><p>कोणतेही नवीन पेंडिंग जॉब्स नाहीत.</p></div>
         </div>
+
+        <!-- ३. मंजूर झालेले जॉब्स (Live Jobs) -->
+        <h2>उपलब्ध नोकऱ्या (Approved Jobs)</h2>
+        <div id="approved-jobs"></div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 JobDhund Portal. All Rights Reserved.</p>
-    </footer>
-
-    <!-- JavaScript code for Language Changing -->
     <script>
-        function changeLang(lang) {
-            if (lang === 'mr') {
-                document.getElementById('search-title').innerText = "तुमच्या जिल्ह्यातील नोकरी शोधा";
-                document.getElementById('post-btn').innerText = "+ मोफत जाहिरात पोस्ट करा (Post Job)";
-            } else if (lang === 'hi') {
-                document.getElementById('search-title').innerText = "अपने जिले में नौकरी ढूंढें";
-                document.getElementById('post-btn').innerText = "+ मुफ्त विज्ञापन पोस्ट करें";
-            } else if (lang === 'en') {
-                document.getElementById('search-title').innerText = "Search Jobs in Your District";
-                document.getElementById('post-btn').innerText = "+ Post a Job Free";
+        // लोकल स्टोरेजमधून डेटा घेणे
+        let jobs = JSON.parse(localStorage.getItem('jobDhundData')) || [];
+        let isAdminLoggedIn = false;
+
+        const jobForm = document.getElementById('jobForm');
+        const approvedJobsDiv = document.getElementById('approved-jobs');
+        const pendingJobsDiv = document.getElementById('pending-jobs');
+
+        // फॉर्म सबमिट केल्यावर जॉब Save करणे (Status: pending)
+        jobForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newJob = {
+                id: Date.now(),
+                title: document.getElementById('title').value,
+                company: document.getElementById('company').value,
+                district: document.getElementById('district').value,
+                phone: document.getElementById('phone').value,
+                desc: document.getElementById('desc').value,
+                status: 'pending' // सुरुवातीला पेंडिंग राहील
+            };
+
+            jobs.push(newJob);
+            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+            alert('जॉब यशस्वीरित्या सबमिट झाला आहे! एडमिनच्या Approval नंतर वेबसाईटवर दिसेल.');
+            jobForm.reset();
+            renderJobs();
+        });
+
+        // जॉब्स स्क्रीनवर दाखवणे
+        function renderJobs() {
+            approvedJobsDiv.innerHTML = '';
+            pendingJobsDiv.innerHTML = '';
+
+            let hasPending = false;
+
+            jobs.forEach(job => {
+                if (job.status === 'approved') {
+                    approvedJobsDiv.innerHTML += `
+                        <div class="job-card">
+                            <div class="job-details">
+                                <h3>${job.title}</h3>
+                                <p><strong>कंपनी:</strong> ${job.company}</p>
+                                <p><strong>स्थान:</strong> ${job.district} | <span class="badge">${job.desc}</span></p>
+                            </div>
+                            <div>
+                                <a href="tel:${job.phone}" class="call-btn">📞 कॉल करा</a>
+                            </div>
+                        </div>
+                    `;
+                } else if (job.status === 'pending' && isAdminLoggedIn) {
+                    hasPending = true;
+                    pendingJobsDiv.innerHTML += `
+                        <div class="job-card" style="border-left-color: #ffc107;">
+                            <div class="job-details">
+                                <h3>${job.title}</h3>
+                                <p><strong>कंपनी:</strong> ${job.company} | <strong>मोबाईल:</strong> ${job.phone}</p>
+                                <p><strong>स्थान:</strong> ${job.district} | <strong>माहिती:</strong> ${job.desc}</p>
+                            </div>
+                            <div>
+                                <button onclick="approveJob(${job.id})" class="approve-btn">✓ Approve</button>
+                                <button onclick="deleteJob(${job.id})" class="reject-btn">✗ Reject</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (!hasPending && isAdminLoggedIn) {
+                pendingJobsDiv.innerHTML = '<p>कोणतेही पेंडिंग जॉब्स नाहीत.</p>';
             }
         }
+
+        // एडमिन लॉगिन (पासवर्ड: admin123)
+        function toggleAdmin() {
+            if (!isAdminLoggedIn) {
+                let password = prompt("कृपया एडमिन पासवर्ड टाका:");
+                if (password === "admin123") {
+                    isAdminLoggedIn = true;
+                    document.getElementById('admin-panel').style.display = 'block';
+                    alert("एडमिन लॉगिन यशस्वी!");
+                    renderJobs();
+                } else {
+                    alert("चुकीचा पासवर्ड!");
+                }
+            } else {
+                isAdminLoggedIn = false;
+                document.getElementById('admin-panel').style.display = 'none';
+                renderJobs();
+            }
+        }
+
+        // जॉब मंजुरी (Approve)
+        function approveJob(id) {
+            jobs = jobs.map(j => j.id === id ? {...j, status: 'approved'} : j);
+            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+            renderJobs();
+        }
+
+        // जॉब डिलीट / रिजेक्ट करणे
+        function deleteJob(id) {
+            jobs = jobs.filter(j => j.id !== id);
+            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+            renderJobs();
+        }
+
+        // सुरुवातीला जॉब्स लोड करा
+        renderJobs();
     </script>
 </body>
-      </html>
-
+</html>
