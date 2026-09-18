@@ -1,409 +1,1102 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JobDhund</title>
-    <style>
-        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
-        body { background-color: #e9ecef; color: #333; padding-bottom: 70px; }
-        
-        /* App Header */
-        header { background-color: #0056b3; color: white; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .app-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: bold; }
-        .logo-circle { background: white; color: #0056b3; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
-        
-        .header-icons { display: flex; gap: 8px; align-items: center; }
-        .icon-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 8px; border-radius: 4px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        
-        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 4px; padding: 5px; font-size: 12px; cursor: pointer; }
-        .lang-select option { color: black; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobDhund</title>
 
-        .container { max-width: 600px; margin: 12px auto; padding: 0 10px; }
-        .disclaimer-bar { font-size: 11px; color: #856404; background: #fff3cd; padding: 8px; border-radius: 4px; border: 1px solid #ffeeba; margin-bottom: 12px; text-align: center; }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
 
-        /* Job Card Layout */
-        .job-card { background: white; border-radius: 8px; margin-bottom: 15px; padding: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ccc; }
-        .card-top-actions { display: flex; justify-content: space-between; margin-bottom: 10px; }
-        
-        .ad-content-box { border: 1px dashed #0056b3; background: #f8f9fa; padding: 15px 10px; text-align: center; border-radius: 6px; margin-bottom: 10px; }
-        .job-title { color: #0056b3; font-size: 18px; font-weight: bold; margin-bottom: 6px; }
-        .job-info { font-size: 14px; color: #444; margin: 4px 0; }
+body{
+    background:#e9ecef;
+    color:#333;
+    padding-bottom:75px;
+}
 
-        .card-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; }
+header{
+    background:#0056b3;
+    color:#fff;
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 2px 5px rgba(0,0,0,.2);
+}
 
-        /* Buttons Styling */
-        .btn { padding: 6px 12px; border: none; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
-        .share-btn { background-color: #17a2b8; color: white; }
-        .call-btn { background-color: #28a745; color: white; }
-        .wa-btn { background-color: #25D366; color: white; }
-        .reject-btn { background-color: #dc3545; color: white; }
-        .approve-btn { background-color: #007bff; color: white; }
+.app-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:18px;
+    font-weight:bold;
+}
 
-        /* Bottom Category Bar */
-        .bottom-cat-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; overflow-x: auto; border-top: 2px solid #0056b3; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 99; }
-        .cat-tab { flex: 1; min-width: 70px; text-align: center; padding: 12px 5px; font-size: 13px; font-weight: bold; color: #555; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
-        .cat-tab.active { color: #0056b3; border-bottom-color: #0056b3; background: #f0f7ff; }
+.logo-circle{
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#fff;
+    color:#0056b3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:bold;
+}
 
-        /* Modal Popups */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.header-icons{
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
 
-        .modal-header { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #0056b3; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
-        .form-group { margin-bottom: 10px; }
-        .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 3px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
-        
-        .submit-btn { background: #0056b3; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
-        .close-btn { background: #6c757d; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; margin-top: 5px; }
+.icon-btn,
+.lang-select{
+    background:rgba(255,255,255,.2);
+    color:#fff;
+    border:0;
+    border-radius:5px;
+    padding:6px 8px;
+    cursor:pointer;
+    font-size:12px;
+}
 
-        #admin-section { display: none; background: #fff3cd; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffeeba; }
-    </style>
+.lang-select option{
+    color:#000;
+}
+
+.container{
+    max-width:650px;
+    margin:12px auto;
+    padding:0 10px;
+}
+
+.disclaimer-bar{
+    font-size:11px;
+    color:#856404;
+    background:#fff3cd;
+    border:1px solid #ffeeba;
+    padding:8px;
+    border-radius:5px;
+    margin-bottom:12px;
+    text-align:center;
+}
+
+.job-card{
+    background:#fff;
+    border-radius:8px;
+    margin-bottom:15px;
+    padding:12px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+    border:1px solid #ddd;
+}
+
+.card-top-actions{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.ad-content-box{
+    border:1px dashed #0056b3;
+    background:#f8f9fa;
+    padding:15px 10px;
+    text-align:center;
+    border-radius:6px;
+}
+
+.job-title{
+    color:#0056b3;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.job-info{
+    font-size:14px;
+    color:#444;
+    margin:5px 0;
+}
+
+.card-bottom-actions{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:6px;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid #eee;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:7px 11px;
+    border:0;
+    border-radius:5px;
+    font-weight:bold;
+    font-size:12px;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+}
+
+.share-btn{background:#17a2b8;color:#fff;}
+.call-btn{background:#28a745;color:#fff;}
+.wa-btn{background:#25d366;color:#fff;}
+.reject-btn{background:#dc3545;color:#fff;}
+.approve-btn{background:#007bff;color:#fff;}
+.edit-btn{background:#ffc107;color:#212529;}
+
+.bottom-cat-bar{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#fff;
+    display:flex;
+    overflow-x:auto;
+    border-top:2px solid #0056b3;
+    box-shadow:0 -2px 5px rgba(0,0,0,.1);
+    z-index:99;
+}
+
+.cat-tab{
+    flex:1;
+    min-width:70px;
+    padding:12px 5px;
+    text-align:center;
+    font-size:13px;
+    font-weight:bold;
+    color:#555;
+    background:none;
+    border:0;
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.cat-tab.active{
+    color:#0056b3;
+    border-bottom-color:#0056b3;
+    background:#f0f7ff;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.65);
+    z-index:1000;
+    justify-content:center;
+    align-items:center;
+    padding:15px;
+}
+
+.modal-content{
+    background:#fff;
+    width:100%;
+    max-width:430px;
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:9px;
+    padding:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.3);
+}
+
+.modal-header{
+    color:#0056b3;
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:14px;
+    padding-bottom:8px;
+    border-bottom:1px solid #ddd;
+}
+
+.form-group{
+    margin-bottom:11px;
+}
+
+.form-group label{
+    display:block;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:9px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    font-size:13px;
+}
+
+.submit-btn,
+.close-btn{
+    width:100%;
+    padding:10px;
+    border:0;
+    border-radius:5px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:6px;
+}
+
+.submit-btn{
+    background:#0056b3;
+    color:#fff;
+}
+
+.close-btn{
+    background:#6c757d;
+    color:#fff;
+}
+
+#admin-section{
+    display:none;
+    background:#fff3cd;
+    border:1px solid #ffeeba;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+.admin-title{
+    color:#856404;
+    font-size:15px;
+    margin-bottom:10px;
+}
+
+.pending-card{
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:6px;
+    padding:10px;
+    margin-bottom:8px;
+}
+
+.empty{
+    background:#fff;
+    border-radius:8px;
+    padding:25px;
+    text-align:center;
+    color:#777;
+    margin-top:10px;
+}
+
+.badge{
+    display:inline-block;
+    padding:3px 7px;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:bold;
+    background:#e7f1ff;
+    color:#0056b3;
+    margin-bottom:5px;
+}
+
+.admin-login-btn{
+    background:none;
+    border:0;
+    color:#fff;
+    opacity:.3;
+    cursor:pointer;
+    font-size:11px;
+}
+
+.owner-badge{
+    background:#198754;
+    color:#fff;
+    border-radius:12px;
+    padding:4px 8px;
+    font-size:10px;
+}
+
+@media(max-width:500px){
+    .app-title span{
+        font-size:16px;
+    }
+
+    .header-icons{
+        gap:3px;
+    }
+
+    .icon-btn{
+        padding:6px;
+    }
+
+    .lang-select{
+        width:62px;
+    }
+
+    .job-title{
+        font-size:16px;
+    }
+
+    .btn{
+        font-size:11px;
+        padding:7px 9px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- Header Section -->
-    <header>
-        <div class="app-title">
-            <div class="logo-circle">JD</div>
-            <span>JobDhund</span>
+<header>
+
+    <div class="app-title">
+        <div class="logo-circle">JD</div>
+        <span>JobDhund</span>
+    </div>
+
+    <div class="header-icons">
+
+        <select class="lang-select" id="langSelect"
+                onchange="changeLanguage(this.value)">
+            <option value="mr">मराठी</option>
+            <option value="hi">हिंदी</option>
+            <option value="en">EN</option>
+        </select>
+
+        <button class="icon-btn" onclick="openLocationModal()">
+            📍 <span id="loc-text">सर्व भारत</span>
+        </button>
+
+        <button class="icon-btn"
+                onclick="openPostModal()">
+            📄+
+        </button>
+
+        <button class="admin-login-btn"
+                onclick="openAdminLogin()">
+            ⚙️
+        </button>
+
+    </div>
+</header>
+
+
+<div class="container">
+
+    <div class="disclaimer-bar" id="disclaimer-txt">
+        Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.
+    </div>
+
+
+    <!-- ADMIN PANEL -->
+
+    <div id="admin-section">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="admin-title">
+                👑 Owner Admin Panel
+            </div>
+
+            <span class="owner-badge">
+                OWNER
+            </span>
         </div>
-        
-        <div class="header-icons">
-            <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
-                <option value="mr">मराठी</option>
-                <option value="hi">हिंदी</option>
-                <option value="en">EN</option>
+
+        <div id="pending-jobs"></div>
+
+        <button class="close-btn"
+                onclick="logoutAdmin()">
+            Admin Logout
+        </button>
+
+    </div>
+
+
+    <!-- APPROVED JOBS -->
+
+    <div id="approved-jobs"></div>
+
+</div>
+
+
+<!-- CATEGORY BAR -->
+
+<div class="bottom-cat-bar">
+
+    <button class="cat-tab active"
+            id="cat-all"
+            onclick="filterCategory('all',this)">
+        सर्व
+    </button>
+
+    <button class="cat-tab"
+            id="cat-wanted"
+            onclick="filterCategory('wanted',this)">
+        पाहिजेत
+    </button>
+
+    <button class="cat-tab"
+            id="cat-sell"
+            onclick="filterCategory('sell',this)">
+        विकणे
+    </button>
+
+    <button class="cat-tab"
+            id="cat-rent"
+            onclick="filterCategory('rent',this)">
+        भाड्याने
+    </button>
+
+    <button class="cat-tab"
+            id="cat-other"
+            onclick="filterCategory('other',this)">
+        इतर
+    </button>
+
+</div>
+
+
+<!-- LOCATION MODAL -->
+
+<div class="modal" id="locationModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            स्थान निवडा
+        </div>
+
+        <div class="form-group">
+
+            <label>राज्य:</label>
+
+            <select id="stateSelect"
+                    onchange="loadCities()">
             </select>
 
-            <button class="icon-btn" onclick="openLocationModal()">
-                📍 <span id="loc-text">सर्व भारत</span>
+        </div>
+
+        <div class="form-group">
+
+            <label>शहर:</label>
+
+            <select id="citySelect">
+            </select>
+
+        </div>
+
+        <button class="submit-btn"
+                onclick="applyLocationFilter()">
+            लागू करा
+        </button>
+
+        <button class="close-btn"
+                onclick="closeLocationModal()">
+            बंद करा
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- POST MODAL -->
+
+<div class="modal" id="postModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            + नवीन जाहिरात पोस्ट करा
+        </div>
+
+        <form id="jobForm">
+
+            <div class="form-group">
+
+                <label>जाहिरात शीर्षक:</label>
+
+                <input type="text"
+                       id="title"
+                       required
+                       maxlength="100"
+                       placeholder="उदा. ड्रायव्हर पाहिजे">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>कंपनी / मालकाचे नाव:</label>
+
+                <input type="text"
+                       id="company"
+                       required
+                       maxlength="100"
+                       placeholder="उदा. साई ट्रॅव्हल्स">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>वर्गवारी:</label>
+
+                <select id="category">
+
+                    <option value="wanted">
+                        पाहिजेत
+                    </option>
+
+                    <option value="sell">
+                        विकणे
+                    </option>
+
+                    <option value="rent">
+                        भाड्याने
+                    </option>
+
+                    <option value="other">
+                        इतर
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>राज्य:</label>
+
+                <select id="postState"
+                        onchange="loadPostCities()"
+                        required>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>शहर:</label>
+
+                <select id="postCity"
+                        required>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>मोबाईल नंबर:</label>
+
+                <input type="tel"
+                       id="phone"
+                       required
+                       maxlength="10"
+                       pattern="[0-9]{10}"
+                       placeholder="9876543210">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>पगार / अधिक माहिती:</label>
+
+                <textarea id="desc"
+                          rows="3"
+                          maxlength="500"
+                          placeholder="उदा. ₹15,000 प्रति महिना"></textarea>
+
+            </div>
+
+
+            <button type="submit"
+                    class="submit-btn">
+                सबमिट करा
             </button>
 
-            <button class="icon-btn" onclick="openPostModal()">📄+</button>
-            
-            <button onclick="enableAdminMode()" style="background:none; border:none; color:white; opacity: 0.2; font-size: 10px; cursor:pointer;">⚙️</button>
-        </div>
-    </header>
+            <button type="button"
+                    class="close-btn"
+                    onclick="closePostModal()">
+                रद्द करा
+            </button>
 
-    <div class="container">
-        <div class="disclaimer-bar" id="disclaimer-txt">
-            Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.
-        </div>
+        </form>
 
-        <div id="admin-section">
-            <h3 style="color: #856404; font-size: 14px; margin-bottom: 8px;">🔑 Admin Panel (पेंडिंग पोस्ट्स)</h3>
-            <div id="pending-jobs"></div>
-        </div>
-
-        <div id="approved-jobs"></div>
     </div>
 
-    <!-- Bottom Category Tabs -->
-    <div class="bottom-cat-bar">
-        <button class="cat-tab active" onclick="filterCategory('all', this)" id="cat-all">सर्व</button>
-        <button class="cat-tab" onclick="filterCategory('wanted', this)" id="cat-wanted">पाहिजेत</button>
-        <button class="cat-tab" onclick="filterCategory('sell', this)" id="cat-sell">विकणे</button>
-        <button class="cat-tab" onclick="filterCategory('rent', this)" id="cat-rent">भाड्याने</button>
-        <button class="cat-tab" onclick="filterCategory('other', this)" id="cat-other">इतर</button>
-    </div>
+</div>
 
-    <!-- POPUP 1: Location Filter Modal -->
-    <div class="modal" id="locationModal">
-        <div class="modal-content">
-            <div class="modal-header">स्थान निवडा (Select Location)</div>
-            <div class="form-group">
-                <label>राज्य (State):</label>
-                <select id="stateSelect" onchange="loadCities()">
-                    <option value="all">सर्व भारत (All India)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>शहर (City):</label>
-                <select id="citySelect">
-                    <option value="all">सर्व शहरे (All Cities)</option>
-                </select>
-            </div>
-            <button class="submit-btn" onclick="applyLocationFilter()">लागू करा</button>
-            <button class="close-btn" onclick="closeLocationModal()">बंद करा</button>
+
+<!-- ADMIN LOGIN MODAL -->
+
+<div class="modal" id="adminLoginModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            🔐 Owner Login
         </div>
-    </div>
 
-    <!-- POPUP 2: Job Post Form Modal -->
-    <div class="modal" id="postModal">
-        <div class="modal-content">
-            <div class="modal-header">+ नवीन जाहिरात पोस्ट करा</div>
-            <form id="jobForm">
-                <div class="form-group">
-                    <label>जाहिरात शीर्षक (Title):</label>
-                    <input type="text" id="title" required placeholder="उदा. ड्रायव्हर पाहिजे">
-                </div>
-                <div class="form-group">
-                    <label>कंपनी/मालकाचे नाव:</label>
-                    <input type="text" id="company" required placeholder="उदा. साई ट्रॅव्हल्स">
-                </div>
-                <div class="form-group">
-                    <label>वर्गवारी (Category):</label>
-                    <select id="category">
-                        <option value="wanted">पाहिजेत (Wanted)</option>
-                        <option value="sell">विकणे (Sell)</option>
-                        <option value="rent">भाड्याने (Rent)</option>
-                        <option value="other">इतर (Other)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>राज्य (State):</label>
-                    <select id="postState" onchange="loadPostCities()" required></select>
-                </div>
-                <div class="form-group">
-                    <label>शहर (City):</label>
-                    <select id="postCity" required></select>
-                </div>
-                <div class="form-group">
-                    <label>संपर्क मोबाईल नंबर:</label>
-                    <input type="tel" id="phone" required placeholder="उदा. 9876543210">
-                </div>
-                <div class="form-group">
-                    <label>पगार / अधिक माहिती:</label>
-                    <textarea id="desc" rows="2" placeholder="उदा. १२,००० महिना"></textarea>
-                </div>
-                <button type="submit" class="submit-btn">सबमिट करा</button>
-                <button type="button" class="close-btn" onclick="closePostModal()">रद्द करा</button>
-            </form>
+        <div class="form-group">
+
+            <label>Admin Password:</label>
+
+            <input type="password"
+                   id="adminPassword"
+                   placeholder="Password">
+
         </div>
+
+        <button class="submit-btn"
+                onclick="loginAdmin()">
+            Login
+        </button>
+
+        <button class="close-btn"
+                onclick="closeAdminLogin()">
+            बंद करा
+        </button>
+
     </div>
 
-    <script>
-        const translations = {
-            mr: {
-                disclaimer: "Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.",
-                all: "सर्व", wanted: "पाहिजेत", sell: "विकणे", rent: "भाड्याने", other: "इतर",
-                share: "🔗 शेअर", call: "📞 कॉल", whatsapp: "💬 WhatsApp", delete: "🗑️ डिलीट",
-                allIndia: "सर्व भारत", allCities: "सर्व शहरे"
-            },
-            hi: {
-                disclaimer: "Disclaimer: कृपया किसी भी नौकरी के लिए पैसे देने से पहले सभी जानकारी स्वयं जांच लें।",
-                all: "सभी", wanted: "चाहिए", sell: "बेचना", rent: "किराये पर", other: "अन्य",
-                share: "🔗 शेयर", call: "📞 कॉल", whatsapp: "💬 WhatsApp", delete: "🗑️ हटाएं",
-                allIndia: "पूरा भारत", allCities: "सभी शहर"
-            },
-            en: {
-                disclaimer: "Disclaimer: Please verify all details independently before making any payments.",
-                all: "ALL", wanted: "WANTED", sell: "SELL", rent: "RENT", other: "OTHER",
-                share: "🔗 Share", call: "📞 Call", whatsapp: "💬 WhatsApp", delete: "🗑️ Delete",
-                allIndia: "All India", allCities: "All Cities"
-            }
-        };
+</div>
 
-        let currentLang = 'mr';
-        let selectedState = 'all';
-        let selectedCity = 'all';
-        let selectedCategory = 'all';
 
-        const indiaData = {
-            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur", "Satara", "Sangli"],
-            "Delhi": ["New Delhi", "North Delhi", "South Delhi"],
-            "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
-            "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru"],
-            "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Noida"]
-        };
+<script>
 
-        let initialData = [
-            {
-                id: 1,
-                title: "ड्रायव्हर पाहिजे (कारसाठी)",
-                company: "साई ट्रॅव्हल्स",
-                category: "wanted",
-                state: "Maharashtra",
-                city: "Pune",
-                phone: "9876543210",
-                desc: "पगार १५,००० प्रति महिना. राहण्याची सोय आहे.",
-                status: "approved"
-            }
-        ];
+/* ==============================
+   TRANSLATIONS
+================================ */
 
-        let jobs = JSON.parse(localStorage.getItem('jobDhundData')) || initialData;
-        let isAdminLoggedIn = localStorage.getItem('my_secret_admin') === 'true';
+const translations = {
 
-        const approvedJobsDiv = document.getElementById('approved-jobs');
-        const pendingJobsDiv = document.getElementById('pending-jobs');
+    mr:{
+        disclaimer:
+        "Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.",
 
-        function initLocationData() {
-            const stateSel = document.getElementById('stateSelect');
-            const postState = document.getElementById('postState');
-            if(!stateSel || !postState) return;
+        all:"सर्व",
+        wanted:"पाहिजेत",
+        sell:"विकणे",
+        rent:"भाड्याने",
+        other:"इतर",
 
-            stateSel.innerHTML = `<option value="all">${translations[currentLang].allIndia}</option>`;
-            postState.innerHTML = `<option value="">राज्य निवडा</option>`;
+        share:"🔗 शेअर",
+        call:"📞 कॉल",
+        whatsapp:"💬 WhatsApp",
+        delete:"🗑️ डिलीट",
+        approve:"✅ मंजूर करा",
 
-            for (let state in indiaData) {
-                stateSel.innerHTML += `<option value="${state}">${state}</option>`;
-                postState.innerHTML += `<option value="${state}">${state}</option>`;
-            }
-        }
+        allIndia:"सर्व भारत",
+        allCities:"सर्व शहरे",
 
-        function loadCities() {
-            const state = document.getElementById('stateSelect').value;
-            const citySel = document.getElementById('citySelect');
-            citySel.innerHTML = `<option value="all">${translations[currentLang].allCities}</option>`;
+        noJobs:"सध्या कोणत्याही जाहिराती उपलब्ध नाहीत.",
+        pending:"Pending जाहिराती",
+        submitted:"जाहिरात सबमिट झाली आहे. Admin Approval नंतर ती Live होईल."
+    },
 
-            if (indiaData[state]) {
-                indiaData[state].forEach(city => {
-                    citySel.innerHTML += `<option value="${city}">${city}</option>`;
-                });
-            }
-        }
+    hi:{
+        disclaimer:
+        "Disclaimer: कृपया किसी भी नौकरी के लिए पैसे देने से पहले सभी जानकारी स्वयं जांच लें।",
 
-        function loadPostCities() {
-            const state = document.getElementById('postState').value;
-            const citySel = document.getElementById('postCity');
-            citySel.innerHTML = `<option value="">शहर निवडा</option>`;
+        all:"सभी",
+        wanted:"चाहिए",
+        sell:"बेचना",
+        rent:"किराये पर",
+        other:"अन्य",
 
-            if (indiaData[state]) {
-                indiaData[state].forEach(city => {
-                    citySel.innerHTML += `<option value="${city}">${city}</option>`;
-                });
-            }
-        }
+        share:"🔗 शेयर",
+        call:"📞 कॉल",
+        whatsapp:"💬 WhatsApp",
+        delete:"🗑️ हटाएं",
+        approve:"✅ मंजूर करें",
 
-        function openPostModal() { document.getElementById('postModal').style.display = 'flex'; }
-        function closePostModal() { document.getElementById('postModal').style.display = 'none'; }
-        function openLocationModal() { document.getElementById('locationModal').style.display = 'flex'; }
-        function closeLocationModal() { document.getElementById('locationModal').style.display = 'none'; }
+        allIndia:"पूरा भारत",
+        allCities:"सभी शहर",
 
-        function applyLocationFilter() {
-            selectedState = document.getElementById('stateSelect').value;
-            selectedCity = document.getElementById('citySelect').value;
-            
-            let locText = translations[currentLang].allIndia;
-            if (selectedCity !== 'all') locText = selectedCity;
-            else if (selectedState !== 'all') locText = selectedState;
+        noJobs:"अभी कोई विज्ञापन उपलब्ध नहीं है।",
+        pending:"Pending विज्ञापन",
+        submitted:"विज्ञापन सबमिट हो गया है। Admin Approval के बाद Live होगा।"
+    },
 
-            document.getElementById('loc-text').innerText = locText;
-            closeLocationModal();
-            renderJobs();
-        }
+    en:{
+        disclaimer:
+        "Disclaimer: Please verify all details independently before making any payments.",
 
-        document.getElementById('jobForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const newJob = {
-                id: Date.now(),
-                title: document.getElementById('title').value,
-                company: document.getElementById('company').value,
-                category: document.getElementById('category').value,
-                state: document.getElementById('postState').value,
-                city: document.getElementById('postCity').value,
-                phone: document.getElementById('phone').value,
-                desc: document.getElementById('desc').value,
-                status: 'pending'
-            };
+        all:"ALL",
+        wanted:"WANTED",
+        sell:"SELL",
+        rent:"RENT",
+        other:"OTHER",
 
-            jobs.push(newJob);
-            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
-            alert('जाहिरात सबमिट झाली आहे! Admin Approval नंतर लाईव्ह होईल.');
-            document.getElementById('jobForm').reset();
-            closePostModal();
-            renderJobs();
+        share:"🔗 Share",
+        call:"📞 Call",
+        whatsapp:"💬 WhatsApp",
+        delete:"🗑️ Delete",
+        approve:"✅ Approve",
+
+        allIndia:"All India",
+        allCities:"All Cities",
+
+        noJobs:"No advertisements available.",
+        pending:"Pending Advertisements",
+        submitted:"Advertisement submitted. It will go live after Admin Approval."
+    }
+
+};
+
+
+/* ==============================
+   STATE DATA
+================================ */
+
+const indiaData = {
+
+    "Maharashtra":[
+        "Mumbai",
+        "Pune",
+        "Nagpur",
+        "Nashik",
+        "Thane",
+        "Aurangabad",
+        "Solapur",
+        "Kolhapur",
+        "Satara",
+        "Sangli"
+    ],
+
+    "Delhi":[
+        "New Delhi",
+        "North Delhi",
+        "South Delhi"
+    ],
+
+    "Gujarat":[
+        "Ahmedabad",
+        "Surat",
+        "Vadodara",
+        "Rajkot"
+    ],
+
+    "Karnataka":[
+        "Bengaluru",
+        "Mysuru",
+        "Mangaluru"
+    ],
+
+    "Uttar Pradesh":[
+        "Lucknow",
+        "Kanpur",
+        "Varanasi",
+        "Noida"
+    ],
+
+    "Madhya Pradesh":[
+        "Bhopal",
+        "Indore",
+        "Jabalpur",
+        "Gwalior"
+    ],
+
+    "Goa":[
+        "Panaji",
+        "Margao"
+    ],
+
+    "Rajasthan":[
+        "Jaipur",
+        "Jodhpur",
+        "Udaipur",
+        "Kota"
+    ]
+};
+
+
+/* ==============================
+   APP STATE
+================================ */
+
+let currentLang = "mr";
+
+let selectedState = "all";
+let selectedCity = "all";
+let selectedCategory = "all";
+
+let isAdminLoggedIn =
+    sessionStorage.getItem("jobdhund_owner") === "true";
+
+
+/*
+ IMPORTANT:
+
+ This password is ONLY for this demo frontend.
+
+ For real production:
+ use Firebase/Supabase/backend authentication.
+*/
+
+const DEMO_OWNER_PASSWORD = "1234";
+
+
+/* ==============================
+   INITIAL DATA
+================================ */
+
+const initialData = [
+
+    {
+        id:1,
+
+        title:"ड्रायव्हर पाहिजे (कारसाठी)",
+
+        company:"साई ट्रॅव्हल्स",
+
+        category:"wanted",
+
+        state:"Maharashtra",
+
+        city:"Pune",
+
+        phone:"9876543210",
+
+        desc:"पगार ₹15,000 प्रति महिना. राहण्याची सोय आहे.",
+
+        status:"approved",
+
+        createdAt:Date.now()
+    }
+
+];
+
+
+let jobs =
+    JSON.parse(localStorage.getItem("jobDhundData"))
+    || initialData;
+
+
+/* ==============================
+   DOM
+================================ */
+
+const approvedJobsDiv =
+    document.getElementById("approved-jobs");
+
+const pendingJobsDiv =
+    document.getElementById("pending-jobs");
+
+
+/* ==============================
+   SAFE TEXT
+================================ */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* ==============================
+   SAVE
+================================ */
+
+function saveJobs(){
+
+    localStorage.setItem(
+        "jobDhundData",
+        JSON.stringify(jobs)
+    );
+
+}
+
+
+/* ==============================
+   LOCATION
+================================ */
+
+function initLocationData(){
+
+    const stateSel =
+        document.getElementById("stateSelect");
+
+    const postState =
+        document.getElementById("postState");
+
+    const t =
+        translations[currentLang];
+
+
+    stateSel.innerHTML =
+        `<option value="all">${t.allIndia}</option>`;
+
+    postState.innerHTML =
+        `<option value="">राज्य निवडा</option>`;
+
+
+    Object.keys(indiaData).forEach(state=>{
+
+        stateSel.innerHTML +=
+            `<option value="${escapeHTML(state)}">
+                ${escapeHTML(state)}
+             </option>`;
+
+        postState.innerHTML +=
+            `<option value="${escapeHTML(state)}">
+                ${escapeHTML(state)}
+             </option>`;
+
+    });
+
+
+    stateSel.value = selectedState;
+
+    loadCities();
+
+}
+
+
+/* ==============================
+   FILTER CITIES
+================================ */
+
+function loadCities(){
+
+    const state =
+        document.getElementById("stateSelect").value;
+
+    const citySel =
+        document.getElementById("citySelect");
+
+    const t =
+        translations[currentLang];
+
+
+    citySel.innerHTML =
+        `<option value="all">${t.allCities}</option>`;
+
+
+    if(indiaData[state]){
+
+        indiaData[state].forEach(city=>{
+
+            citySel.innerHTML +=
+                `<option value="${escapeHTML(city)}">
+                    ${escapeHTML(city)}
+                 </option>`;
+
         });
 
-        function filterCategory(cat, btn) {
-            selectedCategory = cat;
-            document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderJobs();
-        }
-
-        function changeLanguage(lang) {
-    currentLang = lang;
-    const t = translations[lang];
-
-    if (!t) return;
-            const langSelect = document.getElementById('langSelect');
-if (langSelect) langSelect.value = lang;
-            
-
-    const disclaimerElem = document.getElementById('disclaimer-txt');
-    if (disclaimerElem) disclaimerElem.innerText = t.disclaimer;
-
-    const catAll = document.getElementById('cat-all');
-    const catWanted = document.getElementById('cat-wanted');
-    const catSell = document.getElementById('cat-sell');
-    const catRent = document.getElementById('cat-rent');
-    const catOther = document.getElementById('cat-other');
-
-    if (catAll) catAll.innerText = t.all;
-    if (catWanted) catWanted.innerText = t.wanted;
-    if (catSell) catSell.innerText = t.sell;
-    if (catRent) catRent.innerText = t.rent;
-    if (catOther) catOther.innerText = t.other;
-
-    initLocationData();
-    renderJobs();
-
-
-        
-        
-        function enableAdminMode() {
-            const pass = prompt("पासवर्ड टाका:");
-            if(pass === "1234") { // तुमचा हवा तो पासवर्ड सेट करा
-                isAdminLoggedIn = true;
-                localStorage.setItem('my_secret_admin', 'true');
-                alert("Admin Mode सुरु झाला!");
-            } else {
-                alert("चुकीचा पासवर्ड!");
-            }
-            renderJobs();
-        }
-
-        function approveJob(id) {
-            jobs = jobs.map(j => j.id === id ? {...j, status: 'approved'} : j);
-            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
-            renderJobs();
-        }
-
-        function deleteJob(id) {
-    if (confirm("ही जाहिरात हटवायची आहे का?")) {
-        jobs = jobs.filter(j => j.id !== id);
-        localStorage.setItem('jobDhundData', JSON.stringify(jobs));
-        renderJobs();
     }
-        
-            
 
-        function renderJobs() {
-            approvedJobsDiv.innerHTML = '';
-            pendingJobsDiv.innerHTML = '';
-            let hasPending = false;
-            let approvedCount = 0;
-            const t = translations[currentLang];
+}
 
-            if (isAdminLoggedIn) {
-                document.getElementById('admin-section').style.display = 'block';
-            } else {
-                document.getElementById('admin-section').style.display = 'none';
-            }
 
-            jobs.forEach(job => {
-                let stateMatch = (selectedState === 'all' || job.state === selectedState);
-                let cityMatch = (selectedCity === 'all' || job.city === selectedCity);
+/* ==============================
+   POST CITIES
+================================ */
 
-                if (job.status === 'approved' && stateMatch && cityMatch) {
-                    if (selectedCategory === 'all' || job.category === selectedCategory) {
-                        approvedCount++;
-                        let deleteBtn = isAdminLoggedIn ? `<button onclick="deleteJob(${job.id})" class="btn reject-btn">${t.delete}</button>` : '';
+function loadPostCities(){
 
-                        let shareMsg = encodeURIComponent(`*${job.title}*\nकंपनी: ${job.company}\nमाहिती: ${job.desc}\nसंपर्क: ${job.phone}\nJobDhund वर पहा!`);
+    const state =
+        document.getElementById("postState").value;
 
-                        approvedJobsDiv.innerHTML += `
-                            <div class="job-card">
-                                <div class="card-top-actions">
-                                    <a href="https://api.whatsapp.com/send?text=${shareMsg}" target="_blank" class="btn share-btn">${t.share}</a>
-                                    <a href="tel:${job.phone}" class="btn call-btn">${t.call}</a>
-                                </div>
+    const citySel =
+        document.getElementById("postCity");
 
-                                <div class="ad-content-box">
-                                    <div class="job-title">${job.title}</div>
-                                    <div class="job-info"><strong>कंपनी:</strong> ${job.company}</div>
-                                    <div class="job-info"><strong>माहिती:</strong> ${job.desc}</div>
-                                    <div class="job-info" style="font-size:12px; color:#666; margin-top:5px;">📍 ${job.city}, ${job.state}</div>
-                     
+
+    citySel.innerHTML =
+        `<option value="">शहर निवडा</option>`;
+
+
+    if(indiaData[state]){
+
+        indiaData[state].forEach(city=>{
+
+            citySel.innerHTML +=
+                `<option value="${escapeHTML(city)}">
+                    ${escapeHTML(city)}
+                 </option>`;
+
+        });
+
+    }
+
+}
+
+
+/* ==============================
+   MODALS
+================================ */
+
+function openPostModal(){
+
+    document.getElementById("postModal")
+        .style.display = "flex";
+
+}
+
+
+function closePostModal(){
+
+    document.getElementById("postModal")
+        .style.display = "none";
+
+}
+
+
+function openLocationModal(){
+
+    document.getElementById("locationModal")
+        .style.display = "flex";
+
+}
+
+
+function closeLocationModal(){
+
+    document.getElementById("locationModal")
+        .style.display = "none";
+
+}
+
+
+function openAdminLogin(){
+
+    if(isAdminLoggedIn){
+
+        document.getElementById("admin-section")
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+        return;
+    }
+
+    document.getElementById("adminLoginModal")
+        .style.display = "flex";
+
+    setTimeout(()=>{
+        document.getElementById("adminPassword").focus();
+   
