@@ -59,12 +59,13 @@
         <div class="header-icons">
             <button class="icon-btn" onclick="openPostModal()" title="जॉब पोस्ट करा">📄+</button>
             <button class="icon-btn" onclick="openFilterModal()" title="फिल्टर करा">🔍</button>
-            <button class="icon-btn" onclick="toggleAdmin()" title="एडमिन" style="font-size:14px;">🔑</button>
+            <!-- बदला: 🔑 बटण काढून गुप्त (Hidden) बटण ठेवले आहे जे फक्त तुम्हालाच माहित असेल -->
+            <button class="icon-btn" onclick="enableAdminMode()" title="" style="opacity: 0.1; font-size: 10px;">⚙️</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- Admin Panel (फक्त पासवर्ड टाकल्यावर उघडेल) -->
+        <!-- Admin Panel -->
         <div id="admin-section">
             <h3 style="color: #856404; font-size: 15px; margin-bottom: 10px;">🔑 Admin Panel (पेंडिंग पोस्ट्स)</h3>
             <div id="pending-jobs"></div>
@@ -74,7 +75,7 @@
         <div id="approved-jobs"></div>
     </div>
 
-    <!-- POPUP 1: Category Filter Modal (NCA App सारखा) -->
+    <!-- POPUP 1: Category Filter Modal -->
     <div class="modal" id="filterModal">
         <div class="modal-content">
             <div class="modal-header">Select Category</div>
@@ -89,7 +90,7 @@
         </div>
     </div>
 
-    <!-- POPUP 2: Job Post Form Modal (+ चिन्ह दाबल्यावर उघडणारा) -->
+    <!-- POPUP 2: Job Post Form Modal -->
     <div class="modal" id="postModal">
         <div class="modal-content">
             <div class="modal-header">+ नवीन जाहिरात पोस्ट करा</div>
@@ -127,7 +128,9 @@
 
     <script>
         let jobs = JSON.parse(localStorage.getItem('jobDhundData')) || [];
-        let isAdminLoggedIn = false;
+        
+        // बदला १: ब्राऊझरच्या स्टोरेजवरून ऑटोमॅटिक अ‍ॅडमिन चेक करणे
+        let isAdminLoggedIn = localStorage.getItem('my_secret_admin') === 'true';
         let selectedCategory = 'all';
 
         const approvedJobsDiv = document.getElementById('approved-jobs');
@@ -173,6 +176,13 @@
             pendingJobsDiv.innerHTML = '';
             let hasPending = false;
 
+            // अ‍ॅडमिन असेल तरच सेक्शन दिसेल
+            if (isAdminLoggedIn) {
+                document.getElementById('admin-section').style.display = 'block';
+            } else {
+                document.getElementById('admin-section').style.display = 'none';
+            }
+
             jobs.forEach(job => {
                 if (job.status === 'approved') {
                     if (selectedCategory === 'all' || job.category === selectedCategory) {
@@ -213,22 +223,17 @@
             }
         }
 
-        // Admin Toggle (Password: admin123)
-        function toggleAdmin() {
-            if (!isAdminLoggedIn) {
-                let pass = prompt("एडमिन पासवर्ड टाका:");
-                if (pass === "admin123") {
-                    isAdminLoggedIn = true;
-                    document.getElementById('admin-section').style.display = 'block';
-                    alert("एडमिन लॉगिन झाले!");
-                } else {
-                    alert("चुकीचा पासवर्ड!");
-                }
+        // बदला २: स्वतःच्या मोबाईलमध्ये अ‍ॅडमिन अ‍ॅक्टिव्ह करण्याचे लॉजिक
+        function enableAdminMode() {
+            let pass = prompt("एडमिन पासवर्ड टाका:");
+            if (pass === "admin123") {
+                localStorage.setItem('my_secret_admin', 'true');
+                isAdminLoggedIn = true;
+                alert("अ‍ॅडमिन मोड ऑन झाला! आता या ब्राऊझरवर तुम्हाला अ‍ॅडमिन पॅनेल कायम दिसेल.");
+                renderJobs();
             } else {
-                isAdminLoggedIn = false;
-                document.getElementById('admin-section').style.display = 'none';
+                alert("चुकीचा पासवर्ड!");
             }
-            renderJobs();
         }
 
         function approveJob(id) {
