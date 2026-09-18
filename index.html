@@ -314,20 +314,32 @@
         }
 
         function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+    currentLang = lang;
+    const t = translations[lang];
 
-            document.getElementById('disclaimer-txt').innerText = t.disclaimer;
-            document.getElementById('cat-all').innerText = t.all;
-            document.getElementById('cat-wanted').innerText = t.wanted;
-            document.getElementById('cat-sell').innerText = t.sell;
-            document.getElementById('cat-rent').innerText = t.rent;
-            document.getElementById('cat-other').innerText = t.other;
+    if (!t) return;
 
-            initLocationData();
-            renderJobs();
-        }
+    const disclaimerElem = document.getElementById('disclaimer-txt');
+    if (disclaimerElem) disclaimerElem.innerText = t.disclaimer;
 
+    const catAll = document.getElementById('cat-all');
+    const catWanted = document.getElementById('cat-wanted');
+    const catSell = document.getElementById('cat-sell');
+    const catRent = document.getElementById('cat-rent');
+    const catOther = document.getElementById('cat-other');
+
+    if (catAll) catAll.innerText = t.all;
+    if (catWanted) catWanted.innerText = t.wanted;
+    if (catSell) catSell.innerText = t.sell;
+    if (catRent) catRent.innerText = t.rent;
+    if (catOther) catOther.innerText = t.other;
+
+    initLocationData();
+    renderJobs();
+
+
+        
+        
         function enableAdminMode() {
             const pass = prompt("पासवर्ड टाका:");
             if(pass === "1234") { // तुमचा हवा तो पासवर्ड सेट करा
