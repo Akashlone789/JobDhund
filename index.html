@@ -70,39 +70,32 @@
         </div>
         
         <div class="header-icons">
-            <!-- Language Dropdown -->
             <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
                 <option value="mr">मराठी</option>
                 <option value="hi">हिंदी</option>
                 <option value="en">EN</option>
             </select>
 
-            <!-- Location Button -->
             <button class="icon-btn" onclick="openLocationModal()">
                 📍 <span id="loc-text">सर्व भारत</span>
             </button>
 
-            <!-- Post Job Button -->
             <button class="icon-btn" onclick="openPostModal()">📄+</button>
             
-            <!-- Hidden Admin Button -->
             <button onclick="enableAdminMode()" style="background:none; border:none; color:white; opacity: 0.2; font-size: 10px; cursor:pointer;">⚙️</button>
         </div>
     </header>
 
     <div class="container">
-        <!-- Disclaimer Text -->
         <div class="disclaimer-bar" id="disclaimer-txt">
             Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.
         </div>
 
-        <!-- Admin Panel -->
         <div id="admin-section">
             <h3 style="color: #856404; font-size: 14px; margin-bottom: 8px;">🔑 Admin Panel (पेंडिंग पोस्ट्स)</h3>
             <div id="pending-jobs"></div>
         </div>
 
-        <!-- Approved Jobs List -->
         <div id="approved-jobs"></div>
     </div>
 
@@ -181,7 +174,6 @@
     </div>
 
     <script>
-        // Multi-Language Translations
         const translations = {
             mr: {
                 disclaimer: "Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.",
@@ -208,7 +200,6 @@
         let selectedCity = 'all';
         let selectedCategory = 'all';
 
-        // States & Cities Data
         const indiaData = {
             "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur", "Satara", "Sangli"],
             "Delhi": ["New Delhi", "North Delhi", "South Delhi"],
@@ -217,7 +208,6 @@
             "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Noida"]
         };
 
-        // Dummy Data for testing when empty
         let initialData = [
             {
                 id: 1,
@@ -238,7 +228,6 @@
         const approvedJobsDiv = document.getElementById('approved-jobs');
         const pendingJobsDiv = document.getElementById('pending-jobs');
 
-        // Location Modal Data
         function initLocationData() {
             const stateSel = document.getElementById('stateSelect');
             const postState = document.getElementById('postState');
@@ -277,7 +266,6 @@
             }
         }
 
-        // Modals Controls
         function openPostModal() { document.getElementById('postModal').style.display = 'flex'; }
         function closePostModal() { document.getElementById('postModal').style.display = 'none'; }
         function openLocationModal() { document.getElementById('locationModal').style.display = 'flex'; }
@@ -296,7 +284,6 @@
             renderJobs();
         }
 
-        // Form Submit
         document.getElementById('jobForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const newJob = {
@@ -319,7 +306,6 @@
             renderJobs();
         });
 
-        // Filter Category Tabs
         function filterCategory(cat, btn) {
             selectedCategory = cat;
             document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
@@ -327,7 +313,6 @@
             renderJobs();
         }
 
-        // Change App Language
         function changeLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
@@ -343,7 +328,6 @@
             renderJobs();
         }
 
-        // Render Jobs
         function renderJobs() {
             approvedJobsDiv.innerHTML = '';
             pendingJobsDiv.innerHTML = '';
@@ -387,4 +371,12 @@
                                     <a href="https://api.whatsapp.com/send?phone=91${job.phone}&text=${shareMsg}" target="_blank" class="btn wa-btn">${t.whatsapp}</a>
                                 </div>
                             </div>
-       
+                        `;
+                    }
+                } else if (job.status === 'pending' && isAdminLoggedIn) {
+                    hasPending = true;
+                    pendingJobsDiv.innerHTML += `
+                        <div class="job-card" style="border-left: 4px solid #ffc107;">
+                            <div class="job-title">${job.title}</div>
+                            <div class="job-info"><strong>मोबाईल:</strong> ${job.phone} | <strong>शहर:</strong> ${job.city}</div>
+                            <div class="car
