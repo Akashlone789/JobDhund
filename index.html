@@ -318,6 +318,9 @@
     const t = translations[lang];
 
     if (!t) return;
+            const langSelect = document.getElementById('langSelect');
+if (langSelect) langSelect.value = lang;
+            
 
     const disclaimerElem = document.getElementById('disclaimer-txt');
     if (disclaimerElem) disclaimerElem.innerText = t.disclaimer;
