@@ -328,6 +328,32 @@
             renderJobs();
         }
 
+        function enableAdminMode() {
+            const pass = prompt("पासवर्ड टाका:");
+            if(pass === "1234") { // तुमचा हवा तो पासवर्ड सेट करा
+                isAdminLoggedIn = true;
+                localStorage.setItem('my_secret_admin', 'true');
+                alert("Admin Mode सुरु झाला!");
+            } else {
+                alert("चुकीचा पासवर्ड!");
+            }
+            renderJobs();
+        }
+
+        function approveJob(id) {
+            jobs = jobs.map(j => j.id === id ? {...j, status: 'approved'} : j);
+            localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+            renderJobs();
+        }
+
+        function deleteJob(id) {
+            if(confirm("ही जाहिरात हटवायची आहे का?")) {
+                jobs = jobs.filter(j => j.id !== id);
+                localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+                renderJobs();
+            }
+        }
+
         function renderJobs() {
             approvedJobsDiv.innerHTML = '';
             pendingJobsDiv.innerHTML = '';
@@ -364,19 +390,4 @@
                                     <div class="job-info"><strong>कंपनी:</strong> ${job.company}</div>
                                     <div class="job-info"><strong>माहिती:</strong> ${job.desc}</div>
                                     <div class="job-info" style="font-size:12px; color:#666; margin-top:5px;">📍 ${job.city}, ${job.state}</div>
-                                </div>
-
-                                <div class="card-bottom-actions">
-                                    ${deleteBtn}
-                                    <a href="https://api.whatsapp.com/send?phone=91${job.phone}&text=${shareMsg}" target="_blank" class="btn wa-btn">${t.whatsapp}</a>
-                                </div>
-                            </div>
-                        `;
-                    }
-                } else if (job.status === 'pending' && isAdminLoggedIn) {
-                    hasPending = true;
-                    pendingJobsDiv.innerHTML += `
-                        <div class="job-card" style="border-left: 4px solid #ffc107;">
-                            <div class="job-title">${job.title}</div>
-                            <div class="job-info"><strong>मोबाईल:</strong> ${job.phone} | <strong>शहर:</strong> ${job.city}</div>
-                            <div class="car
+                     
