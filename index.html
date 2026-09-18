@@ -4,37 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JobDhund</title>
-    <!-- FontAwesome icons for buttons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
         body { background-color: #e9ecef; color: #333; padding-bottom: 70px; }
         
-        /* NCA App Style App Header */
-        header { background-color: #0056b3; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        /* App Header */
+        header { background-color: #0056b3; color: white; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .app-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: bold; }
         .logo-circle { background: white; color: #0056b3; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; }
         
-        .header-icons { display: flex; gap: 10px; align-items: center; }
-        .icon-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; display: flex; align-items: center; }
+        .header-icons { display: flex; gap: 8px; align-items: center; }
+        .icon-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 5px 8px; border-radius: 4px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
         
-        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 4px; padding: 2px 4px; font-size: 12px; }
+        .lang-select { background: rgba(255,255,255,0.2); color: white; border: none; border-radius: 4px; padding: 5px; font-size: 12px; cursor: pointer; }
         .lang-select option { color: black; }
 
-        .location-badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 3px 6px; border-radius: 12px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
-
         .container { max-width: 600px; margin: 12px auto; padding: 0 10px; }
-        .disclaimer-bar { font-size: 11px; color: #666; background: #fff3cd; padding: 6px 10px; border-radius: 4px; border: 1px solid #ffeeba; margin-bottom: 10px; }
+        .disclaimer-bar { font-size: 11px; color: #856404; background: #fff3cd; padding: 8px; border-radius: 4px; border: 1px solid #ffeeba; margin-bottom: 12px; text-align: center; }
 
-        /* Job Card Layout Matching Sketch */
-        .job-card { background: white; border-radius: 8px; margin-bottom: 15px; padding: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ccc; position: relative; }
+        /* Job Card Layout */
+        .job-card { background: white; border-radius: 8px; margin-bottom: 15px; padding: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #ccc; }
         .card-top-actions { display: flex; justify-content: space-between; margin-bottom: 10px; }
         
-        .ad-content-box { border: 1px dashed #aaa; background: #fafafa; padding: 15px 10px; text-align: center; border-radius: 6px; margin-bottom: 10px; }
-        .job-title { color: #0056b3; font-size: 17px; font-weight: bold; margin-bottom: 5px; }
-        .job-info { font-size: 14px; color: #555; margin: 3px 0; }
+        .ad-content-box { border: 1px dashed #0056b3; background: #f8f9fa; padding: 15px 10px; text-align: center; border-radius: 6px; margin-bottom: 10px; }
+        .job-title { color: #0056b3; font-size: 18px; font-weight: bold; margin-bottom: 6px; }
+        .job-info { font-size: 14px; color: #444; margin: 4px 0; }
 
-        .card-bottom-actions { display: flex; justify-content: flex-end; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; gap: 10px; }
+        .card-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; }
 
         /* Buttons Styling */
         .btn { padding: 6px 12px; border: none; border-radius: 4px; font-weight: bold; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
@@ -44,22 +40,21 @@
         .reject-btn { background-color: #dc3545; color: white; }
         .approve-btn { background-color: #007bff; color: white; }
 
-        /* Bottom Category Navigation Bar */
+        /* Bottom Category Bar */
         .bottom-cat-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; overflow-x: auto; border-top: 2px solid #0056b3; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 99; }
-        .cat-tab { flex: 1; min-width: 70px; text-align: center; padding: 10px 5px; font-size: 13px; font-weight: bold; color: #555; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+        .cat-tab { flex: 1; min-width: 70px; text-align: center; padding: 12px 5px; font-size: 13px; font-weight: bold; color: #555; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
         .cat-tab.active { color: #0056b3; border-bottom-color: #0056b3; background: #f0f7ff; }
 
-        /* Modals */
+        /* Modal Popups */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); animation: pop 0.2s ease-in-out; }
-        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-content { background: white; width: 90%; max-width: 400px; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
         .modal-header { font-size: 16px; font-weight: bold; margin-bottom: 12px; color: #0056b3; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 3px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
         
-        .submit-btn { background: #0056b3; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+        .submit-btn { background: #0056b3; color: white; border: none; padding: 10px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 8px; }
         .close-btn { background: #6c757d; color: white; border: none; padding: 8px; width: 100%; border-radius: 4px; cursor: pointer; margin-top: 5px; }
 
         #admin-section { display: none; background: #fff3cd; padding: 10px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ffeeba; }
@@ -83,13 +78,15 @@
             </select>
 
             <!-- Location Button -->
-            <div class="location-badge" onclick="openLocationModal()" title="स्थान बदला">
-                <i class="fa-solid fa-location-dot"></i>
-                <span id="loc-text">सर्व भारत</span>
-            </div>
+            <button class="icon-btn" onclick="openLocationModal()">
+                📍 <span id="loc-text">सर्व भारत</span>
+            </button>
 
-            <button class="icon-btn" onclick="openPostModal()" title="जाहिरात पोस्ट करा">📄+</button>
-            <button class="icon-btn" onclick="enableAdminMode()" title="" style="opacity: 0.1; font-size: 10px;">⚙️</button>
+            <!-- Post Job Button -->
+            <button class="icon-btn" onclick="openPostModal()">📄+</button>
+            
+            <!-- Hidden Admin Button -->
+            <button onclick="enableAdminMode()" style="background:none; border:none; color:white; opacity: 0.2; font-size: 10px; cursor:pointer;">⚙️</button>
         </div>
     </header>
 
@@ -101,7 +98,7 @@
 
         <!-- Admin Panel -->
         <div id="admin-section">
-            <h3 style="color: #856404; font-size: 14px; margin-bottom: 8px;">🔑 Admin Panel (Pending Posts)</h3>
+            <h3 style="color: #856404; font-size: 14px; margin-bottom: 8px;">🔑 Admin Panel (पेंडिंग पोस्ट्स)</h3>
             <div id="pending-jobs"></div>
         </div>
 
@@ -114,7 +111,6 @@
         <button class="cat-tab active" onclick="filterCategory('all', this)" id="cat-all">सर्व</button>
         <button class="cat-tab" onclick="filterCategory('wanted', this)" id="cat-wanted">पाहिजेत</button>
         <button class="cat-tab" onclick="filterCategory('sell', this)" id="cat-sell">विकणे</button>
-
         <button class="cat-tab" onclick="filterCategory('rent', this)" id="cat-rent">भाड्याने</button>
         <button class="cat-tab" onclick="filterCategory('other', this)" id="cat-other">इतर</button>
     </div>
@@ -122,39 +118,39 @@
     <!-- POPUP 1: Location Filter Modal -->
     <div class="modal" id="locationModal">
         <div class="modal-content">
-            <div class="modal-header" id="loc-modal-title">स्थान निवडा (Select Location)</div>
+            <div class="modal-header">स्थान निवडा (Select Location)</div>
             <div class="form-group">
-                <label id="lbl-state">राज्य (State):</label>
+                <label>राज्य (State):</label>
                 <select id="stateSelect" onchange="loadCities()">
                     <option value="all">सर्व भारत (All India)</option>
                 </select>
             </div>
             <div class="form-group">
-                <label id="lbl-city">शहर (City):</label>
+                <label>शहर (City):</label>
                 <select id="citySelect">
                     <option value="all">सर्व शहरे (All Cities)</option>
                 </select>
             </div>
-            <button class="submit-btn" onclick="applyLocationFilter()" id="btn-apply-loc">लागू करा</button>
-            <button class="close-btn" onclick="closeLocationModal()" id="btn-close-loc">रद्द करा</button>
+            <button class="submit-btn" onclick="applyLocationFilter()">लागू करा</button>
+            <button class="close-btn" onclick="closeLocationModal()">बंद करा</button>
         </div>
     </div>
 
     <!-- POPUP 2: Job Post Form Modal -->
     <div class="modal" id="postModal">
         <div class="modal-content">
-            <div class="modal-header" id="post-modal-title">+ नवीन जाहिरात पोस्ट करा</div>
+            <div class="modal-header">+ नवीन जाहिरात पोस्ट करा</div>
             <form id="jobForm">
                 <div class="form-group">
-                    <label id="lbl-title">शीर्षक / जाहिरात (Job Title):</label>
+                    <label>जाहिरात शीर्षक (Title):</label>
                     <input type="text" id="title" required placeholder="उदा. ड्रायव्हर पाहिजे">
                 </div>
                 <div class="form-group">
-                    <label id="lbl-company">कंपनी/मालकाचे नाव:</label>
+                    <label>कंपनी/मालकाचे नाव:</label>
                     <input type="text" id="company" required placeholder="उदा. साई ट्रॅव्हल्स">
                 </div>
                 <div class="form-group">
-                    <label id="lbl-cat">वर्गवारी (Category):</label>
+                    <label>वर्गवारी (Category):</label>
                     <select id="category">
                         <option value="wanted">पाहिजेत (Wanted)</option>
                         <option value="sell">विकणे (Sell)</option>
@@ -163,46 +159,46 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label id="lbl-post-state">राज्य (State):</label>
+                    <label>राज्य (State):</label>
                     <select id="postState" onchange="loadPostCities()" required></select>
                 </div>
                 <div class="form-group">
-                    <label id="lbl-post-city">शहर (City):</label>
+                    <label>शहर (City):</label>
                     <select id="postCity" required></select>
                 </div>
                 <div class="form-group">
-                    <label id="lbl-phone">संपर्क फोन नंबर:</label>
+                    <label>संपर्क मोबाईल नंबर:</label>
                     <input type="tel" id="phone" required placeholder="उदा. 9876543210">
                 </div>
                 <div class="form-group">
-                    <label id="lbl-desc">पगार / अधिक माहिती:</label>
+                    <label>पगार / अधिक माहिती:</label>
                     <textarea id="desc" rows="2" placeholder="उदा. १२,००० महिना"></textarea>
                 </div>
-                <button type="submit" class="submit-btn" id="btn-submit-post">सबमिट करा</button>
-                <button type="button" class="close-btn" onclick="closePostModal()" id="btn-cancel-post">रद्द करा</button>
+                <button type="submit" class="submit-btn">सबमिट करा</button>
+                <button type="button" class="close-btn" onclick="closePostModal()">रद्द करा</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Dictionary for Multi-Language Support
+        // Multi-Language Translations
         const translations = {
             mr: {
                 disclaimer: "Disclaimer: कृपया कोणत्याही नोकरीसाठी पैसे देण्यापूर्वी सर्व माहिती स्वतः तपासून घ्या.",
                 all: "सर्व", wanted: "पाहिजेत", sell: "विकणे", rent: "भाड्याने", other: "इतर",
-                share: "शेअर", call: "कॉल करा", whatsapp: "व्हॉट्सॲप", delete: "🗑️ डिलीट",
+                share: "🔗 शेअर", call: "📞 कॉल", whatsapp: "💬 WhatsApp", delete: "🗑️ डिलीट",
                 allIndia: "सर्व भारत", allCities: "सर्व शहरे"
             },
             hi: {
                 disclaimer: "Disclaimer: कृपया किसी भी नौकरी के लिए पैसे देने से पहले सभी जानकारी स्वयं जांच लें।",
                 all: "सभी", wanted: "चाहिए", sell: "बेचना", rent: "किराये पर", other: "अन्य",
-                share: "शेयर", call: "कॉल करें", whatsapp: "व्हाट्सएप", delete: "🗑️ हटाएं",
+                share: "🔗 शेयर", call: "📞 कॉल", whatsapp: "💬 WhatsApp", delete: "🗑️ हटाएं",
                 allIndia: "पूरा भारत", allCities: "सभी शहर"
             },
             en: {
                 disclaimer: "Disclaimer: Please verify all details independently before making any payments.",
                 all: "ALL", wanted: "WANTED", sell: "SELL", rent: "RENT", other: "OTHER",
-                share: "Share", call: "Call", whatsapp: "WhatsApp", delete: "🗑️ Delete",
+                share: "🔗 Share", call: "📞 Call", whatsapp: "💬 WhatsApp", delete: "🗑️ Delete",
                 allIndia: "All India", allCities: "All Cities"
             }
         };
@@ -212,25 +208,42 @@
         let selectedCity = 'all';
         let selectedCategory = 'all';
 
-        // Sample India States & Cities Data
+        // States & Cities Data
         const indiaData = {
-            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur", "Satara", "Sangli"],
             "Delhi": ["New Delhi", "North Delhi", "South Delhi"],
             "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot"],
             "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru"],
             "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Noida"]
         };
 
-        let jobs = JSON.parse(localStorage.getItem('jobDhundData')) || [];
+        // Dummy Data for testing when empty
+        let initialData = [
+            {
+                id: 1,
+                title: "ड्रायव्हर पाहिजे (कारसाठी)",
+                company: "साई ट्रॅव्हल्स",
+                category: "wanted",
+                state: "Maharashtra",
+                city: "Pune",
+                phone: "9876543210",
+                desc: "पगार १५,००० प्रति महिना. राहण्याची सोय आहे.",
+                status: "approved"
+            }
+        ];
+
+        let jobs = JSON.parse(localStorage.getItem('jobDhundData')) || initialData;
         let isAdminLoggedIn = localStorage.getItem('my_secret_admin') === 'true';
 
         const approvedJobsDiv = document.getElementById('approved-jobs');
         const pendingJobsDiv = document.getElementById('pending-jobs');
 
-        // Init Location Modal Data
+        // Location Modal Data
         function initLocationData() {
             const stateSel = document.getElementById('stateSelect');
             const postState = document.getElementById('postState');
+            if(!stateSel || !postState) return;
+
             stateSel.innerHTML = `<option value="all">${translations[currentLang].allIndia}</option>`;
             postState.innerHTML = `<option value="">राज्य निवडा</option>`;
 
@@ -335,6 +348,7 @@
             approvedJobsDiv.innerHTML = '';
             pendingJobsDiv.innerHTML = '';
             let hasPending = false;
+            let approvedCount = 0;
             const t = translations[currentLang];
 
             if (isAdminLoggedIn) {
@@ -344,12 +358,12 @@
             }
 
             jobs.forEach(job => {
-                // Check Location Filter
                 let stateMatch = (selectedState === 'all' || job.state === selectedState);
                 let cityMatch = (selectedCity === 'all' || job.city === selectedCity);
 
                 if (job.status === 'approved' && stateMatch && cityMatch) {
                     if (selectedCategory === 'all' || job.category === selectedCategory) {
+                        approvedCount++;
                         let deleteBtn = isAdminLoggedIn ? `<button onclick="deleteJob(${job.id})" class="btn reject-btn">${t.delete}</button>` : '';
 
                         let shareMsg = encodeURIComponent(`*${job.title}*\nकंपनी: ${job.company}\nमाहिती: ${job.desc}\nसंपर्क: ${job.phone}\nJobDhund वर पहा!`);
@@ -357,17 +371,20 @@
                         approvedJobsDiv.innerHTML += `
                             <div class="job-card">
                                 <div class="card-top-actions">
-                                    <a href="https://api.whatsapp.com/send?text=${shareMsg}" target="_blank" class="btn share-btn"><i class="fa-solid fa-share-nodes"></i> ${t.share}</a>
-                                    <a href="tel:${job.phone}" class="btn call-btn"><i class="fa-solid fa-phone"></i> ${t.call}</a>
+                                    <a href="https://api.whatsapp.com/send?text=${shareMsg}" target="_blank" class="btn share-btn">${t.share}</a>
+                                    <a href="tel:${job.phone}" class="btn call-btn">${t.call}</a>
                                 </div>
 
                                 <div class="ad-content-box">
                                     <div class="job-title">${job.title}</div>
                                     <div class="job-info"><strong>कंपनी:</strong> ${job.company}</div>
                                     <div class="job-info"><strong>माहिती:</strong> ${job.desc}</div>
-                                    <div class="job-info" style="font-size:11px; color:#888;">📍 ${job.city}, ${job.state}</div>
+                                    <div class="job-info" style="font-size:12px; color:#666; margin-top:5px;">📍 ${job.city}, ${job.state}</div>
                                 </div>
 
                                 <div class="card-bottom-actions">
                                     ${deleteBtn}
-                                    <a href="https://api.whatsapp.com/send?phone=91$
+                                    <a href="https://api.whatsapp.com/send?phone=91${job.phone}&text=${shareMsg}" target="_blank" class="btn wa-btn">${t.whatsapp}</a>
+                                </div>
+                            </div>
+       
