@@ -362,12 +362,13 @@ if (langSelect) langSelect.value = lang;
         }
 
         function deleteJob(id) {
-            if(confirm("ही जाहिरात हटवायची आहे का?")) {
-                jobs = jobs.filter(j => j.id !== id);
-                localStorage.setItem('jobDhundData', JSON.stringify(jobs));
-                renderJobs();
-            }
-        }
+    if (confirm("ही जाहिरात हटवायची आहे का?")) {
+        jobs = jobs.filter(j => j.id !== id);
+        localStorage.setItem('jobDhundData', JSON.stringify(jobs));
+        renderJobs();
+    }
+        
+            
 
         function renderJobs() {
             approvedJobsDiv.innerHTML = '';
